@@ -6,13 +6,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    val random = Random()
+    private val random = Random()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button_generate.setOnClickListener {
+        main_layout.setOnClickListener {
             random.nextInt(10).toString().apply {
                 text_top_left.text = this
                 text_top_right.text = this
