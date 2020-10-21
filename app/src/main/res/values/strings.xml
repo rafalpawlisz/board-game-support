@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Board Game Support</string>
+    <string name="cube">cube</string>
+    <string name="imago">imago</string>
+    <string name="wielki_zaklad">wielki zaklad</string>
     <string name="red_button">red button</string>
 </resources>

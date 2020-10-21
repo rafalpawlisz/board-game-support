@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cube"
+        android:title="@string/cube" />
+    <item
+        android:id="@+id/imago"
+        android:title="@string/imago" />
+    <item
+        android:id="@+id/wielki_zaklad"
+        android:title="@string/wielki_zaklad" />
+</menu>
