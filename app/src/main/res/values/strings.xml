@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Board Game Support</string>
-    <string name="generate">generate</string>
+    <string name="red_button">red button</string>
 </resources>
