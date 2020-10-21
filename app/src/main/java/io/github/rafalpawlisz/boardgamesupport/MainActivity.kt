@@ -15,12 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         main_layout.setOnClickListener {
-            getRandomNumber(10).toString().apply {
-                text_top_left.text = this
-                text_top_right.text = this
-                text_bottom_left.text = this
-                text_bottom_right.text = this
-            }
+            getRandomNumber(10).toString().setAsResult()
         }
     }
 
@@ -39,4 +34,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getRandomNumber(bound: Int) = random.nextInt(bound)
+
+    private fun String.setAsResult() {
+        setOf(
+            text_top_left,
+            text_top_right,
+            text_bottom_left,
+            text_bottom_right
+        ).forEach { it.text = this }
+    }
 }
