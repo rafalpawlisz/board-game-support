@@ -5,17 +5,16 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private val random = Random()
+    private val gameGeneratorHolder = GameGeneratorHolder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         main_layout.setOnClickListener {
-            getRandomNumber(10).toString().setAsResult()
+            "temp result".setAsResult()
         }
     }
 
@@ -32,8 +31,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    private fun getRandomNumber(bound: Int) = random.nextInt(bound)
 
     private fun String.setAsResult() {
         setOf(
