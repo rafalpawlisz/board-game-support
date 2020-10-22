@@ -8,14 +8,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val gameGeneratorHolder = GameGeneratorHolder()
-    private var gameGenerator: GameGenerator? = null
+    private var gameGenerator: GameGenerator = gameGeneratorHolder.getCubeGameGenerator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         main_layout.setOnClickListener {
-            gameGenerator?.generate()?.setAsResult()
+            gameGenerator.generate().setAsResult()
         }
     }
 
@@ -25,12 +25,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        gameGenerator = when (item.itemId) {
-            R.id.cube -> return true
-            R.id.imago -> return true
-            R.id.wielki_zaklad -> return true
-            else -> return false
+        gameGeneratorHolder.run {
+            gameGenerator = when (item.itemId) {
+                R.id.cube -> getCubeGameGenerator()
+                R.id.imago -> return true
+                R.id.wielki_zaklad -> return true
+                else -> return false
+            }
         }
+        return true
     }
 
     private fun String.setAsResult() {
