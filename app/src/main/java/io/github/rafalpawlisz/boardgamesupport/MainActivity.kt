@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             gameGenerator = when (item.itemId) {
                 R.id.cube -> getCubeGameGenerator()
                 R.id.imago -> getImagoGameGenerator()
-                R.id.wielki_zaklad -> return true
+                R.id.wielki_zaklad -> getWielkiZakladGameGenerator()
                 else -> return false
             }
         }
