@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -17,17 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun Timer(startTone: () -> Unit) {
-    Box(Modifier.fillMaxSize()){
+    Box(Modifier.fillMaxSize()) {
         var startTime by rememberSaveable { mutableIntStateOf(30) }
         var remainingTime by rememberSaveable { mutableIntStateOf(startTime) }
         var counting by rememberSaveable { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
         Text(
             text = remainingTime.toString(),
             modifier = Modifier
@@ -39,7 +40,7 @@ fun Timer(startTone: () -> Unit) {
                     } else {
                         counting = true
                         startTone()
-                        MainScope().launch {
+                        coroutineScope.launch {
                             while (remainingTime > 0 && counting) {
                                 remainingTime--
                                 delay(1.seconds)
@@ -64,7 +65,7 @@ fun Timer(startTone: () -> Unit) {
                     } else {
                         counting = true
                         startTone()
-                        MainScope().launch {
+                        coroutineScope.launch {
                             while (remainingTime > 0 && counting) {
                                 remainingTime--
                                 delay(1.seconds)
