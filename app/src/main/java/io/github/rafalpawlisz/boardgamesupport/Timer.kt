@@ -7,75 +7,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun Timer(startTone: () -> Unit) {
+fun Timer(
+    viewModel: TimerViewModel = koinViewModel(),
+    startTone: () -> Unit,
+) {
     Box(Modifier.fillMaxSize()) {
-        var startTime by rememberSaveable { mutableIntStateOf(30) }
-        var remainingTime by rememberSaveable { mutableIntStateOf(startTime) }
-        var counting by rememberSaveable { mutableStateOf(false) }
-        val coroutineScope = rememberCoroutineScope()
         Text(
-            text = remainingTime.toString(),
+            text = viewModel.remainingTime.toString(),
             modifier = Modifier
                 .padding(bottom = 200.dp)
                 .align(Alignment.BottomCenter)
-                .clickable {
-                    if (counting) {
-                        counting = false
-                    } else {
-                        counting = true
-                        startTone()
-                        coroutineScope.launch {
-                            while (remainingTime > 0 && counting) {
-                                remainingTime--
-                                delay(1.seconds)
-                            }
-                            counting = false
-                            startTone()
-                            remainingTime = startTime
-                        }
-                    }
-                },
+                .clickable { viewModel.onCounterClicked(startTone) },
             fontSize = 50.sp,
         )
         Text(
-            text = remainingTime.toString(),
+            text = viewModel.remainingTime.toString(),
             modifier = Modifier
                 .padding(top = 200.dp)
                 .align(Alignment.TopCenter)
                 .rotate(180f)
-                .clickable {
-                    if (counting) {
-                        counting = false
-                    } else {
-                        counting = true
-                        startTone()
-                        coroutineScope.launch {
-                            while (remainingTime > 0 && counting) {
-                                remainingTime--
-                                delay(1.seconds)
-                            }
-                            counting = false
-                            startTone()
-                            remainingTime = 30
-                        }
-                    }
-                },
+                .clickable { viewModel.onCounterClicked(startTone) },
             fontSize = 50.sp,
         )
         FilledTonalButton(
@@ -83,8 +42,7 @@ fun Timer(startTone: () -> Unit) {
                 .align(Alignment.CenterStart)
                 .padding(start = 50.dp),
             onClick = {
-                startTime = 30
-                remainingTime = 30
+                viewModel.setNewTime(30)
             },
         ) {
             Text(text = "30")
@@ -95,8 +53,7 @@ fun Timer(startTone: () -> Unit) {
                 .align(Alignment.CenterEnd)
                 .padding(end = 50.dp),
             onClick = {
-                startTime = 60
-                remainingTime = 60
+                viewModel.setNewTime(60)
             },
         ) {
             Text(text = "60")

@@ -7,21 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun WielkiZaklad(startTone: () -> Unit) {
+fun WielkiZaklad(
+    viewModel: WielkiZakladViewModel = koinViewModel(),
+    startTone: () -> Unit,
+) {
     Box(modifier = Modifier.fillMaxSize()) {
-        var result by rememberSaveable { mutableStateOf("") }
         FourValues {
-            when (result) {
+            when (viewModel.result) {
                 "green" -> Box(
                     Modifier
                         .size(100.dp)
@@ -41,19 +40,13 @@ fun WielkiZaklad(startTone: () -> Unit) {
                 )
 
                 else -> Text(
-                    text = result,
+                    text = viewModel.result,
                     fontSize = 100.sp,
                 )
             }
         }
-        val firstClick = rememberSaveable { mutableStateOf(true) }
         PlayButton {
-            result = if (firstClick.value) {
-                firstClick.value = false
-                listOf("green", "orange", "yellow").random()
-            } else {
-                (1..3).random().toString()
-            }
+            viewModel.generateResult()
             startTone()
         }
         Timer { startTone() }
