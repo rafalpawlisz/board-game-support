@@ -41,11 +41,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun startTone() = ToneGenerator(
+    private val toneGenerator = ToneGenerator(
         AudioManager.STREAM_MUSIC,
         ToneGenerator.MAX_VOLUME,
-    ).startTone(
-        ToneGenerator.TONE_CDMA_ONE_MIN_BEEP,
+    )
+
+    private fun startTone() = toneGenerator.startTone(
+        ToneGenerator.TONE_CDMA_MED_SSL,
         200,
     )
 }
