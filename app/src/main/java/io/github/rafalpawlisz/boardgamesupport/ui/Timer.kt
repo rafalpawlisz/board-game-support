@@ -1,4 +1,4 @@
-package io.github.rafalpawlisz.boardgamesupport
+package io.github.rafalpawlisz.boardgamesupport.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.rafalpawlisz.boardgamesupport.viewmodel.TimerViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

@@ -1,4 +1,4 @@
-package io.github.rafalpawlisz.boardgamesupport
+package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

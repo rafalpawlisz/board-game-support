@@ -1,4 +1,4 @@
-package io.github.rafalpawlisz.boardgamesupport
+package io.github.rafalpawlisz.boardgamesupport.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

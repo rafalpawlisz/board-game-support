@@ -11,6 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.rafalpawlisz.boardgamesupport.ui.Die
+import io.github.rafalpawlisz.boardgamesupport.ui.Imago
+import io.github.rafalpawlisz.boardgamesupport.ui.Menu
+import io.github.rafalpawlisz.boardgamesupport.ui.Timer
+import io.github.rafalpawlisz.boardgamesupport.ui.WielkiZaklad
 import io.github.rafalpawlisz.boardgamesupport.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {

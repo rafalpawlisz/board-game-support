@@ -1,4 +1,4 @@
-package io.github.rafalpawlisz.boardgamesupport
+package io.github.rafalpawlisz.boardgamesupport.ui
 
 import android.graphics.Color.rgb
 import androidx.compose.foundation.background
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.rafalpawlisz.boardgamesupport.viewmodel.WielkiZakladViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
