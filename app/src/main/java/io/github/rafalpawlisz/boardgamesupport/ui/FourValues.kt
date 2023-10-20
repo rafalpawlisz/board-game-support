@@ -18,10 +18,10 @@ fun FourValues(
     composable: @Composable () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        SingleValue(composable, Alignment.TopStart, 135f)
-        SingleValue(composable, Alignment.TopEnd, -135f)
-        SingleValue(composable, Alignment.BottomStart, 45f)
-        SingleValue(composable, Alignment.BottomEnd, -45f)
+        SingleValue(composable, Alignment.TopStart, 180f)
+        SingleValue(composable, Alignment.TopEnd, -90f)
+        SingleValue(composable, Alignment.BottomStart, 90f)
+        SingleValue(composable, Alignment.BottomEnd, 0f)
     }
 }
 
