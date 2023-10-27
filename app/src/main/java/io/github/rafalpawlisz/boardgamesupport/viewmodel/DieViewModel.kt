@@ -11,5 +11,6 @@ class DieViewModel : ViewModel() {
 
     fun generateResult() {
         result = (1..6).random().toString()
+        ToneGenerator.startTone()
     }
 }

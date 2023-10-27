@@ -17,7 +17,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun WielkiZaklad(
     viewModel: WielkiZakladViewModel = koinViewModel(),
-    startTone: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
@@ -48,8 +47,7 @@ fun WielkiZaklad(
         }
         PlayButton {
             viewModel.generateResult()
-            startTone()
         }
-        Timer { startTone() }
+        Timer()
     }
 }

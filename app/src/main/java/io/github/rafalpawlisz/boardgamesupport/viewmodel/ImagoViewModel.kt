@@ -11,5 +11,6 @@ class ImagoViewModel : ViewModel() {
 
     fun generateResult() {
         result = (1..8).random().toString()
+        ToneGenerator.startTone()
     }
 }

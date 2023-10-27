@@ -18,5 +18,6 @@ class WielkiZakladViewModel : ViewModel() {
         } else {
             (1..3).random().toString()
         }
+        ToneGenerator.startTone()
     }
 }

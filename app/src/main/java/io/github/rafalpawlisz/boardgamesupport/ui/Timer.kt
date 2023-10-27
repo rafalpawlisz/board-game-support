@@ -18,7 +18,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Timer(
     viewModel: TimerViewModel = koinViewModel(),
-    startTone: () -> Unit,
 ) {
     Box(Modifier.fillMaxSize()) {
         Text(
@@ -26,7 +25,7 @@ fun Timer(
             modifier = Modifier
                 .padding(bottom = 200.dp)
                 .align(Alignment.BottomCenter)
-                .clickable { viewModel.onCounterClicked(startTone) },
+                .clickable { viewModel.onCounterClicked() },
             fontSize = 50.sp,
         )
         Text(
@@ -35,7 +34,7 @@ fun Timer(
                 .padding(top = 200.dp)
                 .align(Alignment.TopCenter)
                 .rotate(180f)
-                .clickable { viewModel.onCounterClicked(startTone) },
+                .clickable { viewModel.onCounterClicked() },
             fontSize = 50.sp,
         )
         FilledTonalButton(

@@ -16,19 +16,19 @@ class TimerViewModel : ViewModel() {
     var remainingTime by mutableIntStateOf(startTime)
         private set
 
-    fun onCounterClicked(startTone: () -> Unit) {
+    fun onCounterClicked() {
         if (counting) {
             counting = false
         } else {
             counting = true
-            startTone()
+            ToneGenerator.startTone()
             viewModelScope.launch {
                 while (remainingTime > 0 && counting) {
                     remainingTime--
                     delay(1.seconds)
                 }
                 counting = false
-                startTone()
+                ToneGenerator.startTone()
                 remainingTime = startTime
             }
         }

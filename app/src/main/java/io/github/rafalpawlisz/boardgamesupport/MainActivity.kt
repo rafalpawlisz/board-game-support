@@ -1,7 +1,5 @@
 package io.github.rafalpawlisz.boardgamesupport
 
-import android.media.AudioManager
-import android.media.ToneGenerator
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,23 +34,13 @@ class MainActivity : ComponentActivity() {
                                 navigateToTimer = { navHostController.navigate("Timer") },
                             )
                         }
-                        composable("Die") { Die { startTone() } }
-                        composable("Imago") { Imago { startTone() } }
-                        composable("WielkiZaklad") { WielkiZaklad { startTone() } }
-                        composable("Timer") { Timer { startTone() } }
+                        composable("Die") { Die() }
+                        composable("Imago") { Imago() }
+                        composable("WielkiZaklad") { WielkiZaklad() }
+                        composable("Timer") { Timer() }
                     }
                 }
             }
         }
     }
-
-    private val toneGenerator = ToneGenerator(
-        AudioManager.STREAM_MUSIC,
-        ToneGenerator.MAX_VOLUME,
-    )
-
-    private fun startTone() = toneGenerator.startTone(
-        ToneGenerator.TONE_CDMA_MED_SSL,
-        200,
-    )
 }

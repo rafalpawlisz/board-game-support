@@ -12,7 +12,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun Imago(
     viewModel: ImagoViewModel = koinViewModel(),
-    startTone: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
@@ -20,7 +19,6 @@ fun Imago(
         }
         PlayButton {
             viewModel.generateResult()
-            startTone()
         }
     }
 }
