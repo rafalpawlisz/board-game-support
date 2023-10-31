@@ -2,40 +2,43 @@ package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 class TimerViewModel : ViewModel() {
-    private var startTime by mutableIntStateOf(30)
-    private var counting by mutableStateOf(false)
+    var startTime = 30
+        set(value) {
+            field = value
+            clearCountdown()
+        }
     var remainingTime by mutableIntStateOf(startTime)
         private set
+    private var countdownJob: Job? = null
 
     fun onCounterClicked() {
-        if (counting) {
-            counting = false
-        } else {
-            counting = true
-            ToneGenerator.startTone()
-            viewModelScope.launch {
-                while (remainingTime > 0 && counting) {
-                    remainingTime--
-                    delay(1.seconds)
-                }
-                counting = false
-                ToneGenerator.startTone()
-                remainingTime = startTime
+        ToneGenerator.startTone()
+        countdownJob?.let {
+            clearCountdown()
+            return
+        }
+        countdownJob = viewModelScope.launch {
+            while (remainingTime > 0) {
+                remainingTime--
+                delay(1.seconds)
             }
+            ToneGenerator.startTone()
+            clearCountdown()
         }
     }
 
-    fun setNewTime(value: Int) {
-        startTime = value
-        remainingTime = value
+    private fun clearCountdown() {
+        countdownJob?.cancel()
+        countdownJob = null
+        remainingTime = startTime
     }
 }

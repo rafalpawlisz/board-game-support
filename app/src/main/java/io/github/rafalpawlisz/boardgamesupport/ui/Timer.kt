@@ -42,7 +42,7 @@ fun Timer(
                 .align(Alignment.CenterStart)
                 .padding(start = 50.dp),
             onClick = {
-                viewModel.setNewTime(30)
+                viewModel.startTime = 30
             },
         ) {
             Text(text = "30")
@@ -53,7 +53,7 @@ fun Timer(
                 .align(Alignment.CenterEnd)
                 .padding(end = 50.dp),
             onClick = {
-                viewModel.setNewTime(60)
+                viewModel.startTime = 60
             },
         ) {
             Text(text = "60")
