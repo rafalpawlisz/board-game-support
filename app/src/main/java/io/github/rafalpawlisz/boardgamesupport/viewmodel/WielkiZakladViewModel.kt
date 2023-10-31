@@ -1,23 +1,30 @@
 package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
+import android.graphics.Color.rgb
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 
 class WielkiZakladViewModel : ViewModel() {
-    var result by mutableStateOf("")
+    var result by mutableStateOf<Result>(TextResult(""))
         private set
-
-    private var firstClick by mutableStateOf(true)
+    private var firstClick = true
 
     fun generateResult() {
         result = if (firstClick) {
             firstClick = false
-            listOf("green", "orange", "yellow").random()
+            ColorResult(
+                listOf(Color.Green, Color.Yellow, Color(rgb(255, 140, 0))).random()
+            )
         } else {
-            (1..3).random().toString()
+            TextResult((1..3).random().toString())
         }
         ToneGenerator.startTone()
     }
+
+    sealed interface Result
+    data class TextResult(val text: String) : Result
+    data class ColorResult(val color: Color) : Result
 }
