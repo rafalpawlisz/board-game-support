@@ -18,14 +18,14 @@ fun WielkiZaklad(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
-            when (viewModel.result) {
+            when (val result = viewModel.result) {
                 is WielkiZakladViewModel.ColorResult -> Box(
                     Modifier
                         .size(100.dp)
-                        .background((viewModel.result as WielkiZakladViewModel.ColorResult).color)
+                        .background(result.color)
                 )
                 is WielkiZakladViewModel.TextResult -> Text(
-                    text = (viewModel.result as WielkiZakladViewModel.TextResult).text,
+                    text = result.text,
                     fontSize = 100.sp,
                 )
             }

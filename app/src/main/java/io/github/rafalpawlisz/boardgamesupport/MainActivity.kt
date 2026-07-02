@@ -30,21 +30,21 @@ class MainActivity : ComponentActivity() {
                     val navHostController = rememberNavController()
                     NavHost(
                         navController = navHostController,
-                        startDestination = "Menu",
+                        startDestination = Routes.MENU,
                         modifier = Modifier.safeDrawingPadding(),
                     ) {
-                        composable("Menu") {
+                        composable(Routes.MENU) {
                             Menu(
-                                navigateToDie = { navHostController.navigate("Die") },
-                                navigateToImago = { navHostController.navigate("Imago") },
-                                navigateToWielkiZaklad = { navHostController.navigate("WielkiZaklad") },
-                                navigateToTimer = { navHostController.navigate("Timer") },
+                                navigateToDie = { navHostController.navigate(Routes.DIE) },
+                                navigateToImago = { navHostController.navigate(Routes.IMAGO) },
+                                navigateToWielkiZaklad = { navHostController.navigate(Routes.WIELKI_ZAKLAD) },
+                                navigateToTimer = { navHostController.navigate(Routes.TIMER) },
                             )
                         }
-                        composable("Die") { Die() }
-                        composable("Imago") { Imago() }
-                        composable("WielkiZaklad") { WielkiZaklad() }
-                        composable("Timer") { Timer() }
+                        composable(Routes.DIE) { Die() }
+                        composable(Routes.IMAGO) { Imago() }
+                        composable(Routes.WIELKI_ZAKLAD) { WielkiZaklad() }
+                        composable(Routes.TIMER) { Timer() }
                     }
                 }
             }
