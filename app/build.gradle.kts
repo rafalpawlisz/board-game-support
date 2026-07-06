@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "io.github.rafalpawlisz.boardgamesupport"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.rafalpawlisz.boardgamesupport"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
