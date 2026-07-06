@@ -22,6 +22,7 @@ class TimerViewModel : ViewModel() {
 
     fun onCounterClicked() {
         ToneGenerator.startTone()
+        Haptics.confirm()
         countdownJob?.let {
             clearCountdown()
             return
@@ -32,6 +33,7 @@ class TimerViewModel : ViewModel() {
                 delay(1.seconds)
             }
             ToneGenerator.startTone()
+            Haptics.finish()
             clearCountdown()
         }
     }

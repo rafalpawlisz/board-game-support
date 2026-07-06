@@ -23,10 +23,12 @@ class DiceRoller(private val scope: CoroutineScope) {
             for (tickDelay in TICK_DELAYS) {
                 shown = nextInterim(randomValue, shown)
                 onValue(shown)
+                Haptics.tick()
                 delay(tickDelay)
             }
             onValue(finalValue)
             ToneGenerator.startTone()
+            Haptics.confirm()
         }
     }
 
