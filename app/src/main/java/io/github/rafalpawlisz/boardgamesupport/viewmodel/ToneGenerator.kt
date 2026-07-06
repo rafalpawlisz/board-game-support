@@ -16,9 +16,12 @@ object ToneGenerator {
     }
 
     fun startTone() {
-        toneGenerator?.startTone(
-            AndroidToneGenerator.TONE_CDMA_MED_SSL,
-            200,
-        )
+        // Playing the tone is best-effort; audio failures must never crash the app.
+        runCatching {
+            toneGenerator?.startTone(
+                AndroidToneGenerator.TONE_CDMA_MED_SSL,
+                200,
+            )
+        }
     }
 }

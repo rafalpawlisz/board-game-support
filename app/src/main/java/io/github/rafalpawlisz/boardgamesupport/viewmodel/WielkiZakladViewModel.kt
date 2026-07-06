@@ -1,6 +1,5 @@
 package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
-import android.graphics.Color.rgb
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +28,6 @@ class WielkiZakladViewModel : ViewModel() {
     data class ColorResult(val color: Color) : Result
 
     private companion object {
-        val COLORS = listOf(Color.Green, Color.Yellow, Color(rgb(255, 140, 0)))
+        val COLORS = listOf(Color.Green, Color.Yellow, Color(0xFFFF8C00))
     }
 }
