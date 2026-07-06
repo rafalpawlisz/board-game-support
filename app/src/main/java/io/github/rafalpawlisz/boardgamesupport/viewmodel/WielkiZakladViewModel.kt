@@ -6,25 +6,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 
 class WielkiZakladViewModel : ViewModel() {
     var result by mutableStateOf<Result>(TextResult(""))
         private set
     private var firstClick = true
+    private val roller = DiceRoller(viewModelScope)
 
     fun generateResult() {
-        result = if (firstClick) {
+        val randomValue: () -> Result = if (firstClick) {
             firstClick = false
-            ColorResult(
-                listOf(Color.Green, Color.Yellow, Color(rgb(255, 140, 0))).random()
-            )
+            { ColorResult(COLORS.random()) }
         } else {
-            TextResult((1..3).random().toString())
+            { TextResult((1..3).random().toString()) }
         }
-        ToneGenerator.startTone()
+        roller.roll(randomValue) { result = it }
     }
 
     sealed interface Result
     data class TextResult(val text: String) : Result
     data class ColorResult(val color: Color) : Result
+
+    private companion object {
+        val COLORS = listOf(Color.Green, Color.Yellow, Color(rgb(255, 140, 0)))
+    }
 }
