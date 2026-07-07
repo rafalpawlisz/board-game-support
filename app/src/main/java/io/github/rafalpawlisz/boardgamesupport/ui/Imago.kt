@@ -13,6 +13,7 @@ import org.koin.androidx.compose.koinViewModel
 fun Imago(
     viewModel: ImagoViewModel = koinViewModel(),
 ) {
+    KeepScreenOn()
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
             Text(text = viewModel.result, fontSize = 100.sp)

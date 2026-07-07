@@ -19,6 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 fun Timer(
     viewModel: TimerViewModel = koinViewModel(),
 ) {
+    KeepScreenOn()
     Box(Modifier.fillMaxSize()) {
         Text(
             text = viewModel.remainingTime.toString(),

@@ -16,6 +16,7 @@ import org.koin.androidx.compose.koinViewModel
 fun WielkiZaklad(
     viewModel: WielkiZakladViewModel = koinViewModel(),
 ) {
+    KeepScreenOn()
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
             when (val result = viewModel.result) {

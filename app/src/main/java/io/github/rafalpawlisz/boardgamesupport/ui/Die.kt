@@ -13,6 +13,7 @@ import org.koin.androidx.compose.koinViewModel
 fun Die(
     viewModel: DieViewModel = koinViewModel(),
 ) {
+    KeepScreenOn()
     Box(modifier = Modifier.fillMaxSize()) {
         FourValues {
             Text(text = viewModel.result, fontSize = 100.sp)
