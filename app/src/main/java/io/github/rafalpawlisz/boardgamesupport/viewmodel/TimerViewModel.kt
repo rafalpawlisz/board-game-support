@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class TimerViewModel : ViewModel() {
@@ -32,9 +33,18 @@ class TimerViewModel : ViewModel() {
                 remainingTime--
                 delay(1.seconds)
             }
-            ToneGenerator.startTone()
-            Haptics.finish()
+            signalFinish()
             clearCountdown()
+        }
+    }
+
+    // Triple beep alongside the triple haptic pulse; the counter keeps showing 0
+    // for the duration, so a glance at the phone still says the time is up.
+    private suspend fun signalFinish() {
+        Haptics.finish()
+        repeat(3) {
+            ToneGenerator.startTone()
+            delay(500.milliseconds)
         }
     }
 

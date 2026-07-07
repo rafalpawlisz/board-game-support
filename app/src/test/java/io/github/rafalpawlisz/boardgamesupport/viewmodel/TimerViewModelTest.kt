@@ -55,6 +55,33 @@ class TimerViewModelTest {
     }
 
     @Test
+    fun `zero stays visible while the finish signal plays`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(29.seconds)
+        runCurrent()
+        assertEquals(0, viewModel.remainingTime)
+        advanceTimeBy(1.seconds) // mid-signal
+        runCurrent()
+        assertEquals(0, viewModel.remainingTime)
+        advanceUntilIdle()
+        assertEquals(30, viewModel.remainingTime)
+    }
+
+    @Test
+    fun `click during the finish signal stops it and resets`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(29.seconds)
+        runCurrent() // countdown just hit zero, signal playing
+        assertEquals(0, viewModel.remainingTime)
+        viewModel.onCounterClicked()
+        assertEquals(30, viewModel.remainingTime)
+    }
+
+    @Test
     fun `changing start time stops the countdown and applies the new value`() = runTest {
         val viewModel = TimerViewModel()
         viewModel.onCounterClicked()
