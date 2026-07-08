@@ -31,6 +31,9 @@ class TimerViewModel : ViewModel() {
         countdownJob = viewModelScope.launch {
             while (remainingTime > 0) {
                 remainingTime--
+                if (remainingTime in 1..TICK_FROM_SECONDS) {
+                    tick()
+                }
                 delay(1.seconds)
             }
             signalFinish()
@@ -48,9 +51,20 @@ class TimerViewModel : ViewModel() {
         }
     }
 
+    // A short cue on each of the final seconds, so players feel the clock
+    // running out before the finish signal.
+    private fun tick() {
+        ToneGenerator.startTone()
+        Haptics.tick()
+    }
+
     private fun clearCountdown() {
         countdownJob?.cancel()
         countdownJob = null
         remainingTime = startTime
+    }
+
+    private companion object {
+        const val TICK_FROM_SECONDS = 5
     }
 }
