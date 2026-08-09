@@ -7,6 +7,8 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import kotlin.time.Duration.Companion.seconds
@@ -52,6 +54,25 @@ class TimerViewModelTest {
         viewModel.onCounterClicked()
         advanceUntilIdle()
         assertEquals(30, viewModel.remainingTime)
+    }
+
+    @Test
+    fun `running state follows the countdown`() = runTest {
+        val viewModel = TimerViewModel()
+        assertFalse(viewModel.isRunning)
+        viewModel.onCounterClicked()
+        runCurrent()
+        assertTrue("expected the countdown to report running", viewModel.isRunning)
+        viewModel.onCounterClicked()
+        assertFalse("stopping should clear the running state", viewModel.isRunning)
+    }
+
+    @Test
+    fun `running state clears once the countdown finishes`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        advanceUntilIdle()
+        assertFalse(viewModel.isRunning)
     }
 
     @Test

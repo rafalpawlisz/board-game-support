@@ -23,6 +23,13 @@ class WielkiZakladViewModel : ViewModel() {
         roller.roll(randomValue) { result = it }
     }
 
+    /** Starts a new game, so the next draw is a colour again. */
+    fun newGame() {
+        roller.cancel()
+        firstClick = true
+        result = TextResult("")
+    }
+
     sealed interface Result
     data class TextResult(val text: String) : Result
     data class ColorResult(val color: Color) : Result

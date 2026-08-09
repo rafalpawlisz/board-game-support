@@ -16,7 +16,7 @@ class DiceRoller(private val scope: CoroutineScope) {
     private var rollJob: Job? = null
 
     fun <T> roll(randomValue: () -> T, onValue: (T) -> Unit) {
-        rollJob?.cancel()
+        cancel()
         rollJob = scope.launch {
             val finalValue = randomValue()
             var shown: T? = null
@@ -30,6 +30,12 @@ class DiceRoller(private val scope: CoroutineScope) {
             ToneGenerator.startTone()
             Haptics.confirm()
         }
+    }
+
+    /** Stops an in-flight roll, so a cancelled animation cannot overwrite the state. */
+    fun cancel() {
+        rollJob?.cancel()
+        rollJob = null
     }
 
     /**

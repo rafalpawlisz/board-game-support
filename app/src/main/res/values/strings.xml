@@ -5,4 +5,7 @@
     <string name="menu_wielki_zaklad">Wielki Zakład</string>
     <string name="menu_timer">Timer</string>
     <string name="play">PLAY</string>
+    <string name="new_game">NEW GAME</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
 </resources>

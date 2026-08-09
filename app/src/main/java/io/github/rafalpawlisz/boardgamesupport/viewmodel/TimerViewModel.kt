@@ -2,6 +2,7 @@ package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,10 @@ class TimerViewModel : ViewModel() {
         }
     var remainingTime by mutableIntStateOf(startTime)
         private set
+
+    /** Drives the counter's label, so a glance says whether tapping starts or stops it. */
+    var isRunning by mutableStateOf(false)
+        private set
     private var countdownJob: Job? = null
 
     fun onCounterClicked() {
@@ -28,6 +33,7 @@ class TimerViewModel : ViewModel() {
             clearCountdown()
             return
         }
+        isRunning = true
         countdownJob = viewModelScope.launch {
             while (remainingTime > 0) {
                 remainingTime--
@@ -61,6 +67,7 @@ class TimerViewModel : ViewModel() {
     private fun clearCountdown() {
         countdownJob?.cancel()
         countdownJob = null
+        isRunning = false
         remainingTime = startTime
     }
 

@@ -4,7 +4,9 @@ import androidx.compose.ui.graphics.Color
 import io.github.rafalpawlisz.boardgamesupport.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -43,6 +45,37 @@ class WielkiZakladViewModelTest {
                 (result as WielkiZakladViewModel.TextResult).text.toInt() in 1..3,
             )
         }
+    }
+
+    @Test
+    fun `new game makes the next draw a colour again`() = runTest {
+        val viewModel = WielkiZakladViewModel()
+        viewModel.generateResult() // colour
+        advanceUntilIdle()
+        viewModel.generateResult() // number
+        advanceUntilIdle()
+        viewModel.newGame()
+        assertEquals(WielkiZakladViewModel.TextResult(""), viewModel.result)
+        viewModel.generateResult()
+        advanceUntilIdle()
+        assertTrue(
+            "expected a colour after starting a new game, got ${viewModel.result}",
+            viewModel.result is WielkiZakladViewModel.ColorResult,
+        )
+    }
+
+    @Test
+    fun `new game stops an in-flight draw`() = runTest {
+        val viewModel = WielkiZakladViewModel()
+        viewModel.generateResult()
+        runCurrent() // animation has started emitting interim values
+        viewModel.newGame()
+        advanceUntilIdle()
+        assertEquals(
+            "a cancelled draw overwrote the cleared state",
+            WielkiZakladViewModel.TextResult(""),
+            viewModel.result,
+        )
     }
 
     private companion object {
