@@ -35,3 +35,8 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
+
+# Release signing — must never be committed
+keystore.properties
+*.jks
+*.keystore
