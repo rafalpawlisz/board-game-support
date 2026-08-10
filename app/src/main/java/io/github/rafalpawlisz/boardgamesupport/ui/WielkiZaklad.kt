@@ -59,7 +59,7 @@ fun WielkiZaklad(
                 .padding(bottom = 40.dp),
             onClick = {
                 viewModel.newGame()
-                timerViewModel.startTime = ROUND_SECONDS
+                timerViewModel.reset()
             },
         ) {
             Text(text = stringResource(R.string.new_game))

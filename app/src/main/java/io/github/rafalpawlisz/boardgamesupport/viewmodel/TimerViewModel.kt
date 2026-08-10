@@ -15,8 +15,12 @@ import kotlin.time.Duration.Companion.seconds
 class TimerViewModel : ViewModel() {
     var startTime = 30
         set(value) {
+            // Assigning the same value must leave a running countdown alone: screens set
+            // this from a LaunchedEffect, which runs again whenever the activity is
+            // recreated — on rotation, dark mode, font size or multi-window changes.
+            if (field == value) return
             field = value
-            clearCountdown()
+            reset()
         }
     var remainingTime by mutableIntStateOf(startTime)
         private set
@@ -30,7 +34,7 @@ class TimerViewModel : ViewModel() {
         ToneGenerator.startTone()
         Haptics.confirm()
         countdownJob?.let {
-            clearCountdown()
+            reset()
             return
         }
         isRunning = true
@@ -43,7 +47,7 @@ class TimerViewModel : ViewModel() {
                 delay(1.seconds)
             }
             signalFinish()
-            clearCountdown()
+            reset()
         }
     }
 
@@ -64,7 +68,8 @@ class TimerViewModel : ViewModel() {
         Haptics.tick()
     }
 
-    private fun clearCountdown() {
+    /** Stops the countdown and puts the counter back to the start time. */
+    fun reset() {
         countdownJob?.cancel()
         countdownJob = null
         isRunning = false

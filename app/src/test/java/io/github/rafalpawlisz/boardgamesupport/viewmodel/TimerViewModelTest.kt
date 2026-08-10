@@ -57,6 +57,35 @@ class TimerViewModelTest {
     }
 
     @Test
+    fun `setting the same start time leaves a running countdown alone`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(3.seconds)
+        runCurrent()
+        val remainingBefore = viewModel.remainingTime
+
+        // What a LaunchedEffect does again after the activity is recreated.
+        viewModel.startTime = 30
+
+        assertTrue("rotation must not stop the countdown", viewModel.isRunning)
+        assertEquals(remainingBefore, viewModel.remainingTime)
+        viewModel.onCounterClicked() // stop the countdown
+    }
+
+    @Test
+    fun `reset stops a running countdown`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(3.seconds)
+        runCurrent()
+        viewModel.reset()
+        assertFalse(viewModel.isRunning)
+        assertEquals(30, viewModel.remainingTime)
+    }
+
+    @Test
     fun `running state follows the countdown`() = runTest {
         val viewModel = TimerViewModel()
         assertFalse(viewModel.isRunning)
