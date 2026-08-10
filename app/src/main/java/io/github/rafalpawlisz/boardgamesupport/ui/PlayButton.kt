@@ -19,6 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.rafalpawlisz.boardgamesupport.R
 
+/** Shared so screens can leave the middle of the screen free for this button. */
+val PlayButtonDiameter = 140.dp
+
 @Preview(showBackground = true)
 @Composable
 fun PlayButton(
@@ -29,7 +32,7 @@ fun PlayButton(
             onClick = onClick,
             modifier = Modifier
                 .align(Alignment.Center)
-                .size(140.dp),
+                .size(PlayButtonDiameter),
             shape = CircleShape,
         ) {
             Column(

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.DieViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -15,8 +14,8 @@ fun Die(
 ) {
     KeepScreenOn()
     Box(modifier = Modifier.fillMaxSize()) {
-        FourValues {
-            Text(text = viewModel.result, fontSize = 100.sp)
+        FourValues { size ->
+            Text(text = viewModel.result, fontSize = size.toFontSize())
         }
         PlayButton {
             viewModel.generateResult()

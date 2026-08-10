@@ -2,16 +2,20 @@ package io.github.rafalpawlisz.boardgamesupport.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,74 +38,140 @@ fun Menu(
     navigateToWielkiZaklad: () -> Unit,
     navigateToTimer: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(vertical = 8.dp),
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        // Square tiles only work while there is height to spare. On a wide screen two
+        // rows of squares are taller than the screen, so there the tiles share the
+        // leftover height instead.
+        val squareTiles = maxHeight > maxWidth
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            MenuTile(stringResource(R.string.menu_die), R.drawable.deployed_code_24px, navigateToDie)
-            MenuTile(stringResource(R.string.menu_imago), R.drawable.style_24px, navigateToImago)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            MenuTile(
-                stringResource(R.string.menu_wielki_zaklad),
-                R.drawable.handshake_24px,
-                navigateToWielkiZaklad,
+            Text(
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(vertical = 8.dp),
             )
-            MenuTile(stringResource(R.string.menu_timer), R.drawable.timer_24px, navigateToTimer)
+            MenuRow(squareTiles) {
+                MenuTile(
+                    stringResource(R.string.menu_die),
+                    R.drawable.deployed_code_24px,
+                    squareTiles,
+                    navigateToDie,
+                )
+                MenuTile(
+                    stringResource(R.string.menu_imago),
+                    R.drawable.style_24px,
+                    squareTiles,
+                    navigateToImago,
+                )
+            }
+            MenuRow(squareTiles) {
+                MenuTile(
+                    stringResource(R.string.menu_wielki_zaklad),
+                    R.drawable.handshake_24px,
+                    squareTiles,
+                    navigateToWielkiZaklad,
+                )
+                MenuTile(
+                    stringResource(R.string.menu_timer),
+                    R.drawable.timer_24px,
+                    squareTiles,
+                    navigateToTimer,
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun ColumnScope.MenuRow(
+    squareTiles: Boolean,
+    content: @Composable RowScope.() -> Unit,
+) {
+    Row(
+        modifier = if (squareTiles) {
+            Modifier.fillMaxWidth()
+        } else {
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        },
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        content = content,
+    )
 }
 
 @Composable
 private fun RowScope.MenuTile(
     text: String,
     @DrawableRes iconResource: Int,
+    squareTiles: Boolean,
     onClick: () -> Unit,
 ) {
     Card(
         onClick = onClick,
         modifier = Modifier
             .weight(1f)
-            .aspectRatio(1f),
+            .then(if (squareTiles) Modifier.aspectRatio(1f) else Modifier.fillMaxHeight()),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Icon(
-                painter = painterResource(iconResource),
-                contentDescription = null,
-                modifier = Modifier.size(56.dp),
-            )
-            Spacer(Modifier.height(12.dp))
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-            )
+        // A short tile has no room to stack the icon above the label, but plenty of
+        // width beside it.
+        if (squareTiles) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                TileIcon(iconResource)
+                Spacer(Modifier.height(12.dp))
+                TileLabel(text)
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TileIcon(iconResource)
+                Spacer(Modifier.width(12.dp))
+                TileLabel(text)
+            }
         }
     }
+}
+
+@Composable
+private fun TileIcon(
+    @DrawableRes iconResource: Int,
+) {
+    Icon(
+        painter = painterResource(iconResource),
+        contentDescription = null,
+        modifier = Modifier.size(56.dp),
+    )
+}
+
+@Composable
+private fun TileLabel(
+    text: String,
+) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Center,
+    )
 }
 
 @Preview(showBackground = true)
