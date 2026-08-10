@@ -1,9 +1,11 @@
 name: Release
 
+# Tags only: the tag is where the version and the release name come from, so there is
+# nothing sensible to build from a plain branch. Re-run a failed release with
+# `gh run rerun <id>`.
 on:
   push:
     tags: [ 'v*' ]
-  workflow_dispatch:
 
 permissions:
   contents: write
