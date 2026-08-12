@@ -57,7 +57,7 @@ class TimerViewModelTest {
     }
 
     @Test
-    fun `setting the same start time leaves a running countdown alone`() = runTest {
+    fun `re-applying the screen's own start time leaves a running countdown alone`() = runTest {
         val viewModel = TimerViewModel()
         viewModel.onCounterClicked()
         runCurrent()
@@ -66,11 +66,26 @@ class TimerViewModelTest {
         val remainingBefore = viewModel.remainingTime
 
         // What a LaunchedEffect does again after the activity is recreated.
-        viewModel.startTime = 30
+        viewModel.useStartTime(30)
 
         assertTrue("rotation must not stop the countdown", viewModel.isRunning)
         assertEquals(remainingBefore, viewModel.remainingTime)
         viewModel.onCounterClicked() // stop the countdown
+    }
+
+    @Test
+    fun `choosing the duration already running restarts the countdown`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(3.seconds)
+        runCurrent()
+
+        // The Timer screen's 30 button, tapped while 30 is already the duration.
+        viewModel.startTime = 30
+
+        assertFalse("tapping a duration should stop the countdown", viewModel.isRunning)
+        assertEquals(30, viewModel.remainingTime)
     }
 
     @Test

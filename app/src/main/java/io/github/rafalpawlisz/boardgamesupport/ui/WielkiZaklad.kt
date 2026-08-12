@@ -29,7 +29,7 @@ fun WielkiZaklad(
 ) {
     KeepScreenOn()
     LaunchedEffect(Unit) {
-        timerViewModel.startTime = ROUND_SECONDS
+        timerViewModel.useStartTime(ROUND_SECONDS)
     }
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val landscape = maxWidth > maxHeight

@@ -13,12 +13,9 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class TimerViewModel : ViewModel() {
+    /** Choosing a duration always restarts the countdown, even the one already chosen. */
     var startTime = 30
         set(value) {
-            // Assigning the same value must leave a running countdown alone: screens set
-            // this from a LaunchedEffect, which runs again whenever the activity is
-            // recreated — on rotation, dark mode, font size or multi-window changes.
-            if (field == value) return
             field = value
             reset()
         }
@@ -66,6 +63,17 @@ class TimerViewModel : ViewModel() {
     private fun tick() {
         ToneGenerator.startTone()
         Haptics.tick()
+    }
+
+    /**
+     * Sets the duration a screen is built around, leaving a running countdown alone when
+     * it is already that duration. Screens assign this from a LaunchedEffect, which runs
+     * again whenever the activity is recreated — on rotation, dark mode, font size or
+     * multi-window changes — and that must not throw away a countdown in progress.
+     */
+    fun useStartTime(seconds: Int) {
+        if (startTime == seconds) return
+        startTime = seconds
     }
 
     /** Stops the countdown and puts the counter back to the start time. */
