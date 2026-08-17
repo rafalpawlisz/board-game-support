@@ -31,20 +31,24 @@ class CatanViewModelTest {
     }
 
     @Test
-    fun `total is the sum of the dice`() = runTest {
+    fun `the total is the two dice added together`() = runTest {
         val viewModel = CatanViewModel()
         repeat(30) {
             viewModel.generateResult()
             advanceUntilIdle()
-            assertEquals(viewModel.dice.sum(), viewModel.total)
-            assertTrue("total out of range: ${viewModel.total}", viewModel.total in 2..12)
+            // Added up here rather than asked of the same sum() the view model uses:
+            // the requirement is that the total is the pair, and a test that reaches
+            // for the implementation to say so cannot disagree with it.
+            val (first, second) = viewModel.dice
+            assertEquals("$first + $second", first + second, viewModel.total)
         }
     }
 
     @Test
     fun `nothing is shown before the first roll`() {
-        assertTrue(CatanViewModel().dice.isEmpty())
-        assertFalse(CatanViewModel().isRolling)
+        val viewModel = CatanViewModel()
+        assertTrue(viewModel.dice.isEmpty())
+        assertFalse(viewModel.isRolling)
     }
 
     @Test
