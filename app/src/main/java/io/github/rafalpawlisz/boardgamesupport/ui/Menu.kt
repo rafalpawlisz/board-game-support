@@ -31,6 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.rafalpawlisz.boardgamesupport.R
 
+/** One gap: around the grid, between the rows and between the tiles. */
+private val Gap = 16.dp
+
 @Composable
 fun Menu(
     navigateToCatan: () -> Unit,
@@ -38,50 +41,60 @@ fun Menu(
     navigateToWielkiZaklad: () -> Unit,
     navigateToFiveSeconds: () -> Unit,
 ) {
-    BoxWithConstraints(Modifier.fillMaxSize()) {
-        // Square tiles only work while there is height to spare. On a wide screen two
-        // rows of squares are taller than the screen, so there the tiles share the
-        // leftover height instead.
-        val squareTiles = maxHeight > maxWidth
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(Gap),
+        verticalArrangement = Arrangement.spacedBy(Gap),
+    ) {
+        Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(vertical = 8.dp),
+        )
+        // Measured below the title, so this is the height the tiles really get. Asking
+        // the screen how tall it is would count the title's height twice over, and on a
+        // nearly square screen that is the difference between two rows of squares
+        // fitting and the bottom one running off the edge.
+        BoxWithConstraints(Modifier.weight(1f)) {
+            // Square tiles only work while there is height to spare: a square is as tall
+            // as it is wide. When two of them plus the gap do not fit, the tiles share
+            // the leftover height instead.
+            val tileSide = (maxWidth - Gap) / 2
+            val squareTiles = tileSide * 2 + Gap <= maxHeight
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(vertical = 8.dp),
-            )
-            MenuRow(squareTiles) {
-                MenuTile(
-                    stringResource(R.string.menu_catan),
-                    R.drawable.deployed_code_24px,
-                    squareTiles,
-                    navigateToCatan,
-                )
-                MenuTile(
-                    stringResource(R.string.menu_imago),
-                    R.drawable.style_24px,
-                    squareTiles,
-                    navigateToImago,
-                )
-            }
-            MenuRow(squareTiles) {
-                MenuTile(
-                    stringResource(R.string.menu_wielki_zaklad),
-                    R.drawable.handshake_24px,
-                    squareTiles,
-                    navigateToWielkiZaklad,
-                )
-                MenuTile(
-                    stringResource(R.string.menu_five_seconds),
-                    R.drawable.timer_24px,
-                    squareTiles,
-                    navigateToFiveSeconds,
-                )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(Gap),
+            ) {
+                MenuRow(squareTiles) {
+                    MenuTile(
+                        stringResource(R.string.menu_catan),
+                        R.drawable.deployed_code_24px,
+                        squareTiles,
+                        navigateToCatan,
+                    )
+                    MenuTile(
+                        stringResource(R.string.menu_imago),
+                        R.drawable.style_24px,
+                        squareTiles,
+                        navigateToImago,
+                    )
+                }
+                MenuRow(squareTiles) {
+                    MenuTile(
+                        stringResource(R.string.menu_wielki_zaklad),
+                        R.drawable.handshake_24px,
+                        squareTiles,
+                        navigateToWielkiZaklad,
+                    )
+                    MenuTile(
+                        stringResource(R.string.menu_five_seconds),
+                        R.drawable.timer_24px,
+                        squareTiles,
+                        navigateToFiveSeconds,
+                    )
+                }
             }
         }
     }
@@ -100,7 +113,7 @@ private fun ColumnScope.MenuRow(
                 .fillMaxWidth()
                 .weight(1f)
         },
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(Gap),
         content = content,
     )
 }
