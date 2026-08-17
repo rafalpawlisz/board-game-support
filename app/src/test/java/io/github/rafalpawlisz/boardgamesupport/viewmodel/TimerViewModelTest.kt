@@ -20,9 +20,20 @@ class TimerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
+    fun `the full duration is on screen for its own second`() = runTest {
+        val viewModel = TimerViewModel()
+        viewModel.onCounterClicked()
+        runCurrent()
+        assertEquals("starting must not skip the first second", 30, viewModel.remainingTime)
+        viewModel.onCounterClicked() // stop the countdown
+    }
+
+    @Test
     fun `countdown decrements once per second`() = runTest {
         val viewModel = TimerViewModel()
         viewModel.onCounterClicked()
+        runCurrent()
+        advanceTimeBy(1.seconds)
         runCurrent()
         assertEquals(29, viewModel.remainingTime)
         advanceTimeBy(1.seconds)
@@ -124,7 +135,7 @@ class TimerViewModelTest {
         val viewModel = TimerViewModel()
         viewModel.onCounterClicked()
         runCurrent()
-        advanceTimeBy(29.seconds)
+        advanceTimeBy(30.seconds)
         runCurrent()
         assertEquals(0, viewModel.remainingTime)
         advanceTimeBy(1.seconds) // mid-signal
@@ -139,7 +150,7 @@ class TimerViewModelTest {
         val viewModel = TimerViewModel()
         viewModel.onCounterClicked()
         runCurrent()
-        advanceTimeBy(29.seconds)
+        advanceTimeBy(30.seconds)
         runCurrent() // countdown just hit zero, signal playing
         assertEquals(0, viewModel.remainingTime)
         viewModel.onCounterClicked()

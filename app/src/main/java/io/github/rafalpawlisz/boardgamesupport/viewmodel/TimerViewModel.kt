@@ -36,12 +36,15 @@ class TimerViewModel : ViewModel() {
         }
         isRunning = true
         countdownJob = viewModelScope.launch {
+            // Wait first, then count down, so the full duration is on screen for its own
+            // second. Counting down first would skip it and leave zero showing early —
+            // barely noticeable over 30 seconds, glaring over five.
             while (remainingTime > 0) {
+                delay(1.seconds)
                 remainingTime--
                 if (remainingTime in 1..TICK_FROM_SECONDS) {
                     tick()
                 }
-                delay(1.seconds)
             }
             signalFinish()
             reset()
