@@ -24,5 +24,5 @@ val appModule = module {
     viewModel { CatanViewModel() }
     viewModel { ImagoViewModel() }
     viewModel { WielkiZakladViewModel() }
-    viewModel { TimerViewModel() }
+    viewModel { (seconds: Int) -> TimerViewModel(seconds) }
 }

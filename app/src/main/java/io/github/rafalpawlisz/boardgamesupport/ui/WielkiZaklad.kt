@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +17,7 @@ import io.github.rafalpawlisz.boardgamesupport.R
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.TimerViewModel
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.WielkiZakladViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 /** The game measures 60 seconds after some of the draws. */
 private const val ROUND_SECONDS = 60
@@ -25,12 +25,9 @@ private const val ROUND_SECONDS = 60
 @Composable
 fun WielkiZaklad(
     viewModel: WielkiZakladViewModel = koinViewModel(),
-    timerViewModel: TimerViewModel = koinViewModel(),
+    timerViewModel: TimerViewModel = koinViewModel { parametersOf(ROUND_SECONDS) },
 ) {
     KeepScreenOn()
-    LaunchedEffect(Unit) {
-        timerViewModel.useStartTime(ROUND_SECONDS)
-    }
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val landscape = maxWidth > maxHeight
 

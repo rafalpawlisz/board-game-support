@@ -9,31 +9,55 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-class TimerViewModel : ViewModel() {
-    /** Choosing a duration always restarts the countdown, even the one already chosen. */
-    var startTime = 30
-        set(value) {
-            field = value
-            reset()
-        }
+/**
+ * @param startTime how long a round lasts. Fixed when the screen asks for its timer, so
+ * the counter never shows a duration belonging to some other game.
+ */
+class TimerViewModel(
+    val startTime: Int,
+) : ViewModel() {
     var remainingTime by mutableIntStateOf(startTime)
         private set
 
     /** Drives the counter's label, so a glance says whether tapping starts or stops it. */
     var isRunning by mutableStateOf(false)
         private set
+
     private var countdownJob: Job? = null
+    private var finishJob: Job? = null
+
+    /** A round shorter than the closing stretch ticks all the way through. */
+    private val tickFrom = min(TICK_WINDOW_SECONDS, startTime)
 
     fun onCounterClicked() {
         ToneGenerator.startTone()
         Haptics.confirm()
-        countdownJob?.let {
+        if (isRunning) {
             reset()
-            return
+        } else {
+            start()
         }
+    }
+
+    /** Stops the countdown and puts the counter back to the start time. */
+    fun reset() {
+        countdownJob?.cancel()
+        countdownJob = null
+        finishJob?.cancel()
+        finishJob = null
+        isRunning = false
+        remainingTime = startTime
+    }
+
+    private fun start() {
+        // A buzzer still sounding from the last round gives way to this one.
+        finishJob?.cancel()
+        finishJob = null
+        remainingTime = startTime
         isRunning = true
         countdownJob = viewModelScope.launch {
             // Wait first, then count down, so the full duration is on screen for its own
@@ -42,12 +66,19 @@ class TimerViewModel : ViewModel() {
             while (remainingTime > 0) {
                 delay(1.seconds)
                 remainingTime--
-                if (remainingTime in 1..TICK_FROM_SECONDS) {
+                if (remainingTime in 1..tickFrom) {
                     tick()
                 }
             }
-            signalFinish()
-            reset()
+            // The round ends the moment it reaches zero. The buzzer outlives it as its own
+            // job, so tapping to start the next round is never spent silencing this one.
+            countdownJob = null
+            isRunning = false
+            finishJob = viewModelScope.launch {
+                signalFinish()
+                remainingTime = startTime
+                finishJob = null
+            }
         }
     }
 
@@ -68,26 +99,7 @@ class TimerViewModel : ViewModel() {
         Haptics.tick()
     }
 
-    /**
-     * Sets the duration a screen is built around, leaving a running countdown alone when
-     * it is already that duration. Screens assign this from a LaunchedEffect, which runs
-     * again whenever the activity is recreated — on rotation, dark mode, font size or
-     * multi-window changes — and that must not throw away a countdown in progress.
-     */
-    fun useStartTime(seconds: Int) {
-        if (startTime == seconds) return
-        startTime = seconds
-    }
-
-    /** Stops the countdown and puts the counter back to the start time. */
-    fun reset() {
-        countdownJob?.cancel()
-        countdownJob = null
-        isRunning = false
-        remainingTime = startTime
-    }
-
     private companion object {
-        const val TICK_FROM_SECONDS = 5
+        const val TICK_WINDOW_SECONDS = 5
     }
 }
