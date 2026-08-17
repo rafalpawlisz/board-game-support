@@ -36,7 +36,7 @@ fun Menu(
     navigateToDie: () -> Unit,
     navigateToImago: () -> Unit,
     navigateToWielkiZaklad: () -> Unit,
-    navigateToTimer: () -> Unit,
+    navigateToFiveSeconds: () -> Unit,
 ) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         // Square tiles only work while there is height to spare. On a wide screen two
@@ -77,10 +77,10 @@ fun Menu(
                     navigateToWielkiZaklad,
                 )
                 MenuTile(
-                    stringResource(R.string.menu_timer),
+                    stringResource(R.string.menu_five_seconds),
                     R.drawable.timer_24px,
                     squareTiles,
-                    navigateToTimer,
+                    navigateToFiveSeconds,
                 )
             }
         }
@@ -181,6 +181,6 @@ fun PreviewMenu() {
         navigateToDie = {},
         navigateToImago = {},
         navigateToWielkiZaklad = {},
-        navigateToTimer = {},
+        navigateToFiveSeconds = {},
     )
 }

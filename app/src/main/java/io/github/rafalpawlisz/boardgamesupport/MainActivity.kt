@@ -12,9 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.rafalpawlisz.boardgamesupport.ui.Die
+import io.github.rafalpawlisz.boardgamesupport.ui.FiveSeconds
 import io.github.rafalpawlisz.boardgamesupport.ui.Imago
 import io.github.rafalpawlisz.boardgamesupport.ui.Menu
-import io.github.rafalpawlisz.boardgamesupport.ui.Timer
 import io.github.rafalpawlisz.boardgamesupport.ui.WielkiZaklad
 import io.github.rafalpawlisz.boardgamesupport.ui.theme.AppTheme
 
@@ -38,13 +38,13 @@ class MainActivity : ComponentActivity() {
                                 navigateToDie = { navHostController.navigate(Routes.DIE) },
                                 navigateToImago = { navHostController.navigate(Routes.IMAGO) },
                                 navigateToWielkiZaklad = { navHostController.navigate(Routes.WIELKI_ZAKLAD) },
-                                navigateToTimer = { navHostController.navigate(Routes.TIMER) },
+                                navigateToFiveSeconds = { navHostController.navigate(Routes.FIVE_SECONDS) },
                             )
                         }
                         composable(Routes.DIE) { Die() }
                         composable(Routes.IMAGO) { Imago() }
                         composable(Routes.WIELKI_ZAKLAD) { WielkiZaklad() }
-                        composable(Routes.TIMER) { Timer() }
+                        composable(Routes.FIVE_SECONDS) { FiveSeconds() }
                     }
                 }
             }

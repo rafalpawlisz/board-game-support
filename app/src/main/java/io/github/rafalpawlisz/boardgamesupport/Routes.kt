@@ -8,5 +8,5 @@ object Routes {
     const val DIE = "Die"
     const val IMAGO = "Imago"
     const val WIELKI_ZAKLAD = "WielkiZaklad"
-    const val TIMER = "Timer"
+    const val FIVE_SECONDS = "FiveSeconds"
 }
