@@ -3,8 +3,10 @@ package io.github.rafalpawlisz.boardgamesupport.viewmodel
 import io.github.rafalpawlisz.boardgamesupport.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -42,5 +44,18 @@ class CatanViewModelTest {
     @Test
     fun `nothing is shown before the first roll`() {
         assertTrue(CatanViewModel().dice.isEmpty())
+        assertFalse(CatanViewModel().isRolling)
+    }
+
+    @Test
+    fun `the dice are not a result until they settle`() = runTest {
+        val viewModel = CatanViewModel()
+
+        viewModel.generateResult()
+        runCurrent()
+        assertTrue("the animation's pairs must not pass for a roll", viewModel.isRolling)
+
+        advanceUntilIdle()
+        assertFalse("the dice have stopped, so the total stands", viewModel.isRolling)
     }
 }

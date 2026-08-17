@@ -1,5 +1,8 @@
 package io.github.rafalpawlisz.boardgamesupport.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,8 +18,16 @@ import kotlin.time.Duration.Companion.milliseconds
 class DiceRoller(private val scope: CoroutineScope) {
     private var rollJob: Job? = null
 
+    /**
+     * True while the value on screen belongs to the animation rather than to the roll.
+     * Anything read off an interim value — a total, say — is not a result yet.
+     */
+    var isRolling by mutableStateOf(false)
+        private set
+
     fun <T> roll(randomValue: () -> T, onValue: (T) -> Unit) {
         cancel()
+        isRolling = true
         rollJob = scope.launch {
             val finalValue = randomValue()
             var shown: T? = null
@@ -26,6 +37,9 @@ class DiceRoller(private val scope: CoroutineScope) {
                 Haptics.tick()
                 delay(tickDelay)
             }
+            // Settled before the value is handed over, so no frame shows the result
+            // and the animation's state at the same time.
+            isRolling = false
             onValue(finalValue)
             ToneGenerator.startTone()
             Haptics.confirm()
@@ -36,6 +50,7 @@ class DiceRoller(private val scope: CoroutineScope) {
     fun cancel() {
         rollJob?.cancel()
         rollJob = null
+        isRolling = false
     }
 
     /**

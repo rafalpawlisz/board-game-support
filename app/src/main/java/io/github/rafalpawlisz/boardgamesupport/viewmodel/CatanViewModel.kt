@@ -16,6 +16,10 @@ class CatanViewModel : ViewModel() {
     val total: Int
         get() = dice.sum()
 
+    /** While this holds, [dice] is a frame of the animation and [total] means nothing. */
+    val isRolling: Boolean
+        get() = roller.isRolling
+
     fun generateResult() {
         roller.roll(randomValue = { List(DICE) { (1..SIDES).random() } }) { dice = it }
     }
