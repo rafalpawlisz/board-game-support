@@ -33,7 +33,7 @@ import io.github.rafalpawlisz.boardgamesupport.R
 
 @Composable
 fun Menu(
-    navigateToDie: () -> Unit,
+    navigateToCatan: () -> Unit,
     navigateToImago: () -> Unit,
     navigateToWielkiZaklad: () -> Unit,
     navigateToFiveSeconds: () -> Unit,
@@ -57,10 +57,10 @@ fun Menu(
             )
             MenuRow(squareTiles) {
                 MenuTile(
-                    stringResource(R.string.menu_die),
+                    stringResource(R.string.menu_catan),
                     R.drawable.deployed_code_24px,
                     squareTiles,
-                    navigateToDie,
+                    navigateToCatan,
                 )
                 MenuTile(
                     stringResource(R.string.menu_imago),
@@ -178,7 +178,7 @@ private fun TileLabel(
 @Composable
 fun PreviewMenu() {
     Menu(
-        navigateToDie = {},
+        navigateToCatan = {},
         navigateToImago = {},
         navigateToWielkiZaklad = {},
         navigateToFiveSeconds = {},

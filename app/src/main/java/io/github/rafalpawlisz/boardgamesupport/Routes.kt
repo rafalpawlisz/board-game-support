@@ -5,7 +5,7 @@ package io.github.rafalpawlisz.boardgamesupport
  */
 object Routes {
     const val MENU = "Menu"
-    const val DIE = "Die"
+    const val CATAN = "Catan"
     const val IMAGO = "Imago"
     const val WIELKI_ZAKLAD = "WielkiZaklad"
     const val FIVE_SECONDS = "FiveSeconds"

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.rafalpawlisz.boardgamesupport.ui.Die
+import io.github.rafalpawlisz.boardgamesupport.ui.Catan
 import io.github.rafalpawlisz.boardgamesupport.ui.FiveSeconds
 import io.github.rafalpawlisz.boardgamesupport.ui.Imago
 import io.github.rafalpawlisz.boardgamesupport.ui.Menu
@@ -35,13 +35,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.MENU) {
                             Menu(
-                                navigateToDie = { navHostController.navigate(Routes.DIE) },
+                                navigateToCatan = { navHostController.navigate(Routes.CATAN) },
                                 navigateToImago = { navHostController.navigate(Routes.IMAGO) },
                                 navigateToWielkiZaklad = { navHostController.navigate(Routes.WIELKI_ZAKLAD) },
                                 navigateToFiveSeconds = { navHostController.navigate(Routes.FIVE_SECONDS) },
                             )
                         }
-                        composable(Routes.DIE) { Die() }
+                        composable(Routes.CATAN) { Catan() }
                         composable(Routes.IMAGO) { Imago() }
                         composable(Routes.WIELKI_ZAKLAD) { WielkiZaklad() }
                         composable(Routes.FIVE_SECONDS) { FiveSeconds() }

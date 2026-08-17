@@ -1,7 +1,7 @@
 package io.github.rafalpawlisz.boardgamesupport
 
 import android.app.Application
-import io.github.rafalpawlisz.boardgamesupport.viewmodel.DieViewModel
+import io.github.rafalpawlisz.boardgamesupport.viewmodel.CatanViewModel
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.Haptics
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.ImagoViewModel
 import io.github.rafalpawlisz.boardgamesupport.viewmodel.TimerViewModel
@@ -21,7 +21,7 @@ class MainApplication : Application() {
 }
 
 val appModule = module {
-    viewModel { DieViewModel() }
+    viewModel { CatanViewModel() }
     viewModel { ImagoViewModel() }
     viewModel { WielkiZakladViewModel() }
     viewModel { TimerViewModel() }
