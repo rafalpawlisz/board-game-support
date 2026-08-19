@@ -6,6 +6,12 @@ A small Android companion app for the specific board games I play. Rather than a
 dice-and-timer toolbox, every screen serves one game — so the tools stay simple, and a new one
 is added only when a game actually calls for it.
 
+## Screenshots
+
+| Menu | Catan | Wielki Zakład |
+|------|-------|---------------|
+| ![Menu](screenshots/menu.png) | ![Catan](screenshots/catan.png) | ![Wielki Zakład](screenshots/wielki-zaklad.png) |
+
 ## Games
 
 - **Catan** — rolls two ordinary dice. The total is shown large with the two dice beneath it,
