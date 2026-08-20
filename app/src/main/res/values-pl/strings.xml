@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Board Game Support</string>
     <string name="menu_catan">Catan</string>
-    <string name="menu_imago">Imagine</string>
+    <string name="menu_imago">Imago</string>
     <string name="menu_wielki_zaklad">Wielki Zakład</string>
-    <string name="menu_five_seconds">5 Second Rule</string>
-    <string name="play">PLAY</string>
-    <string name="new_game">NEW GAME</string>
+    <string name="menu_five_seconds">5 sekund</string>
+    <string name="play">GRAJ</string>
+    <string name="new_game">NOWA GRA</string>
     <string name="start">START</string>
     <string name="stop">STOP</string>
 </resources>
